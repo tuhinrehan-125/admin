@@ -59,6 +59,8 @@ class DashboardController extends Model
         $deliveryChargeEnteredToday = 0;
         $DELIVERY_CHARGE_COLLECTED_TODAY = 0;
         $deli_crge_cl_today = 0;
+        $diff1 = 0;
+        $diff2 = 0;
         if ($request->has('todays_parcel_entry')) {
             $dashboardForm->todays_parcel_entry = $request->todays_parcel_entry;
         }
@@ -99,19 +101,21 @@ class DashboardController extends Model
             $dashboardForm->delivery_charge_collected_till_now = $dashboardForm->delivery_charge_collected_till_now + $deli_crge_cl_today;
         }
         if ($request->has('cod_entry_today')) {
-            $dashboardForm->cod_entry_today = $request->cod_entry_today;
+            $dashboardForm->cod_entry_today = $request->todays_parcel_entry * 1393;
         }
         if ($request->has('cod_collected_receivable_by_merchant')) {
-            $dashboardForm->cod_collected_receivable_by_merchant = $request->cod_collected_receivable_by_merchant;
+            $dashboardForm->cod_collected_receivable_by_merchant = $dashboardForm->cod_collected_receivable_by_merchant + ($todays_percel_entry_now * 1157);
+            $diff1 = $dashboardForm->cod_collected_receivable_by_merchant + ($todays_percel_entry_now * 1157);
         }
         if ($request->has('total_cod_paid_to_merchant')) {
-            $dashboardForm->total_cod_paid_to_merchant = $request->total_cod_paid_to_merchant;
+            $dashboardForm->total_cod_paid_to_merchant = $dashboardForm->total_cod_paid_to_merchant + ($todays_percel_entry_now * 843);
+            $diff2 = $dashboardForm->total_cod_paid_to_merchant + ($todays_percel_entry_now * 843);
         }
         if ($request->has('total_cod_due')) {
-            $dashboardForm->total_cod_due = $request->total_cod_due;
+            $dashboardForm->total_cod_due = $diff1 - $diff2;
         }
         if ($request->has('cod_collected_till_now')) {
-            $dashboardForm->cod_collected_till_now = $request->cod_collected_till_now;
+            $dashboardForm->cod_collected_till_now = $dashboardForm->cod_collected_till_now + $diff1;
         }
 
         $dashboardForm->save();
